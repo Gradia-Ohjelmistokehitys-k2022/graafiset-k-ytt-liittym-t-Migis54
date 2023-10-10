@@ -1,5 +1,4 @@
 using System.Drawing.Imaging;
-using System.Linq;
 
 namespace T_10
 {
@@ -24,16 +23,7 @@ namespace T_10
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            string x = textBox1.Text;
-            if (emt.ContainsValue(x))
-            {
-                MessageBox.Show("dont try to add same thing twice");
-            }
-            else
-            {
-                emt.Add(textBox1.Text, textBox2.Text);
-            }
+            emt.Add(textBox1.Text, textBox2.Text);
 
         }
 
