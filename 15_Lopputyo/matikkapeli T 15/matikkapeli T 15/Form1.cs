@@ -148,9 +148,13 @@ namespace matikkapeli_T_15
                 {
                     MessageBox.Show("Player 1 won");
                 }
-                else 
+                else if (p2p > p1p) 
                 {
                     MessageBox.Show("Player 2 Won");
+                }
+                else if (p2p == p1p) 
+                {
+                    MessageBox.Show("draw");
                 }
                 Application.Restart();
             }
