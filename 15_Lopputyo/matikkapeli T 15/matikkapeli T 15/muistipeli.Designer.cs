@@ -1,6 +1,6 @@
 ﻿namespace matikkapeli_T_15
 {
-    partial class Form1
+    partial class muistipeli
     {
         /// <summary>
         ///  Required designer variable.
