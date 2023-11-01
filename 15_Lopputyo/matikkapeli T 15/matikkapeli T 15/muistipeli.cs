@@ -4,14 +4,14 @@ namespace matikkapeli_T_15
 {
     public partial class muistipeli : Form
     {   
-        bool player = true;
+        bool _player = true;
         //points
-        int p1p;
-        int p2p;
-        List<Button> buttons = new List<Button>();
-        List<Button> showbutton = new List<Button>();
-        List<string> match = new List<string>();
-        List<string> buttonValue = new List<string>()
+        int _p1p;
+        int _p2p;
+        List<Button> _kortit = new List<Button>();
+        List<Button> _showbutton = new List<Button>();
+        List<string> _match = new List<string>();
+        List<string> _kortinArvo = new List<string>()
         {
             "a","b","c","d",
             "e","f","g","h",
@@ -21,7 +21,7 @@ namespace matikkapeli_T_15
             "u","v","w","x",
             "y","z","ö","ä"
         };
-        private void Lauta(int sizeIndex)
+        private void PiirraLauta(int sizeIndex)
         {
             int aX = 0;
             int aY = 0;
@@ -29,14 +29,13 @@ namespace matikkapeli_T_15
 
             for (int i = 0; i < sizeIndex * sizeIndex; i++)
             {
-                Button butt = new Button();
-                this.Controls.Add(butt);
-                butt.Location = new Point(15 + aX, 50 + aY);
-                aX += 100;
-                butt.Size = new Size(100, 100);
-                butt.Click += button_Click;
-                butt.Name = "";
-                buttons.Add(butt);
+                //butt.Location = new Point(15 + aX, 50 + aY);
+                Kortti kortti = new (aX, aY, nextLineIndex);
+                Controls.Add(kortti);    
+                Click += button_Click;
+                
+                _kortit.Add(kortti);
+
                 if (i == (sizeIndex - 1) + nextLineIndex)
                 {
                     aY += 100;
@@ -47,16 +46,14 @@ namespace matikkapeli_T_15
         }
         private void button_rand()
         {
-            List<string> characters = new List<string>(buttonValue);
+           
+            List<string> characters = new List<string>(_kortinArvo); // kopio lista
             List<int> availableSpots = new List<int>();
             Random random = new Random();
-            foreach (string character in buttonValue)
+           
+            for (int spot = 0; spot < _kortit.Count; spot++)
             {
-                characters.Add(character);
-            }
-            for (int spot = 0; spot < buttons.Count; spot++)
-            {
-                if (buttons[spot].Name == string.Empty)
+                if (_kortit[spot].Name == string.Empty)
                 {
                     availableSpots.Add(spot);
                 }
@@ -71,12 +68,12 @@ namespace matikkapeli_T_15
                         int randSpotIndex = random.Next(availableSpots.Count);
                         int spotIndex = availableSpots[randSpotIndex];
                         string character = characters[randIndex];
-                        if (buttons[spotIndex].Name != string.Empty)
+                        if (_kortit[spotIndex].Name != string.Empty)
                         {
                             j--;
                             return;
                         }
-                        buttons[spotIndex].Name = character;
+                        _kortit[spotIndex].Name = character;
                         if (j == 1)
                         {
                             characters.RemoveAt(randIndex);
@@ -89,17 +86,17 @@ namespace matikkapeli_T_15
         }
         private void CheckforWinner() 
         {
-            if (p2p + p1p == 8)
+            if (_p2p + _p1p == 8)
             {
-                if (p1p > p2p)
+                if (_p1p > _p2p)
                 {
                     MessageBox.Show("Player 1 won");
                 }
-                else if (p2p > p1p)
+                else if (_p2p > _p1p)
                 {
                     MessageBox.Show("Player 2 Won");
                 }
-                else if (p2p == p1p)
+                else if (_p2p == _p1p)
                 {
                     MessageBox.Show("draw");
                 }
@@ -108,64 +105,64 @@ namespace matikkapeli_T_15
         }
         private void playerTurn() 
         {
-            if (player == true)
+            if (_player == true)
             {
-                player = false;
+                _player = false;
                 label6.Text = "pelaajan 2 vuoro";
 
             }
             else
             {
-                player = true;
+                _player = true;
                 label6.Text = "pelaajan 1 vuoro";
             }
         }
         private void playerPoints() 
         {
-            if (player == true)
+            if (_player == true)
             {
-                p1p++;
-                label3.Text = p1p.ToString();
+                _p1p++;
+                label3.Text = _p1p.ToString();
             }
             else
             {
-                p2p++;
-                label4.Text = p2p.ToString();
+                _p2p++;
+                label4.Text = _p2p.ToString();
             }
         }
         
         private void button_Click(object sender, EventArgs e) 
         {
             Button button = sender as Button;
-            match.Add(button.Name);
+            _match.Add(button.Name);
             button.Text = button.Name;
-            showbutton.Add(button);
-            if (match.Count == 2)
+            _showbutton.Add(button);
+            if (_match.Count == 2)
             {
-                if (match[0] == match[1])
+                if (_match[0] == _match[1])
                 {
                     MessageBox.Show("match");
                     playerPoints();
-                    for (int x = 0; x < showbutton.Count; x++)
+                    for (int x = 0; x < _showbutton.Count; x++)
                     {
-                        showbutton[x].Text = button.Name;
-                        showbutton[x].Enabled = false;
+                        _showbutton[x].Text = button.Name;
+                        _showbutton[x].Enabled = false;
                     }
                 }
                 else
                 {
                     MessageBox.Show("no match");
-                    for(int x = 0; x < showbutton.Count; x++) 
+                    for(int x = 0; x < _showbutton.Count; x++) 
                     {
-                        showbutton[x].Enabled= true;
-                        showbutton[x].Text = "";
+                        _showbutton[x].Enabled= true;
+                        _showbutton[x].Text = "";
                     }
                     playerTurn();
                 }
-                match.Clear();
-                showbutton.Clear();
+                _match.Clear();
+                _showbutton.Clear();
             }
-            if (match.Count == 1) 
+            if (_match.Count == 1) 
             { 
                 button.Enabled = false; 
             }
@@ -178,7 +175,7 @@ namespace matikkapeli_T_15
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            Lauta(4);
+            PiirraLauta(4);
             button_rand();
         }
     }
