@@ -1,25 +1,23 @@
+using System.Drawing.Text;
 using System.Text.RegularExpressions;
 
 namespace matikkapeli_T_15
 {
     public partial class muistipeli : Form
-    {   
-        bool player = true;
-        //points
-        int p1p;
-        int p2p;
-        List<Button> buttons = new List<Button>();
+    { public static muistipeli instance { get; private set;}
+        Player reference;
         List<Button> showbutton = new List<Button>();
         List<string> match = new List<string>();
+        List<Button> buttons = new List<Button>();
         List<string> buttonValue = new List<string>()
         {
-            "a","b","c","d",
-            "e","f","g","h",
-            "i","j","k","l",
-            "m","n","o","p",
-            "q","r","s","t",
-            "u","v","w","x",
-            "y","z","ö","ä"
+            "Dog","Cat","Duck","Mouse",
+            "Rat","Snake","Pig","Cow",
+            "Pidgeon","Goat","Fox","Chicken",
+            "Bear","Lion","Parrot","Salmon",
+            "FatBear","Turtle","Bird","Ant",
+            "Horse","Donkey","Jaguar","Elephant",
+            "Mikko","Jasper","Joel","Otso", "Niko"
         };
         private void Generate_board(int sizeIndex)
         {
@@ -45,7 +43,7 @@ namespace matikkapeli_T_15
                 }
             }
         }
-        private void button_rand()
+        private void Random_button_value()
         {
             List<int> availableSpots = new List<int>();
             Random random = new Random();
@@ -82,54 +80,8 @@ namespace matikkapeli_T_15
                 }
             }
         }
-        private void CheckforWinner() 
-        {
-            if (p2p + p1p == 8)
-            {
-                if (p1p > p2p)
-                {
-                    MessageBox.Show("Player 1 won");
-                }
-                else if (p2p > p1p)
-                {
-                    MessageBox.Show("Player 2 Won");
-                }
-                else if (p2p == p1p)
-                {
-                    MessageBox.Show("draw");
-                }
-                Application.Restart();
-            }
-        }
-        private void playerTurn() 
-        {
-            if (player == true)
-            {
-                player = false;
-                label6.Text = "pelaajan 2 vuoro";
-
-            }
-            else
-            {
-                player = true;
-                label6.Text = "pelaajan 1 vuoro";
-            }
-        }
-        private void playerPoints() 
-        {
-            if (player == true)
-            {
-                p1p++;
-                label3.Text = p1p.ToString();
-            }
-            else
-            {
-                p2p++;
-                label4.Text = p2p.ToString();
-            }
-        }
         
-        private void button_Click(object sender, EventArgs e) 
+        public void button_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
             match.Add(button.Name);
@@ -140,7 +92,7 @@ namespace matikkapeli_T_15
                 if (match[0] == match[1])
                 {
                     MessageBox.Show("match");
-                    playerPoints();
+                    reference.playerPoints();
                     for (int x = 0; x < showbutton.Count; x++)
                     {
                         showbutton[x].Text = button.Name;
@@ -150,31 +102,35 @@ namespace matikkapeli_T_15
                 else
                 {
                     MessageBox.Show("no match");
-                    for(int x = 0; x < showbutton.Count; x++) 
+                    for (int x = 0; x < showbutton.Count; x++)
                     {
-                        showbutton[x].Enabled= true;
+                        showbutton[x].Enabled = true;
                         showbutton[x].Text = "";
                     }
-                    playerTurn();
+                    reference.playerTurn();
                 }
                 match.Clear();
                 showbutton.Clear();
             }
-            if (match.Count == 1) 
-            { 
-                button.Enabled = false; 
+            if (match.Count == 1)
+            {
+                button.Enabled = false;
             }
-            CheckforWinner();
-            
+            reference.CheckforWinner();
+
         }
+
+
         public muistipeli()
         {
+            instance = this;
             InitializeComponent();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             Generate_board(4);
-            button_rand();
+            Random_button_value();
+            reference = new Player();
         }
     }
 }

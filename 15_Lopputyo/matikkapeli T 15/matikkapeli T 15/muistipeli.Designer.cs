@@ -91,7 +91,7 @@
             this.label6.TabIndex = 5;
             this.label6.Text = "Pelaajan 1 vuoro";
             // 
-            // Form1
+            // muistipeli
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -102,7 +102,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
+            this.Name = "muistipeli";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -114,9 +114,9 @@
 
         private Label label1;
         private Label label2;
-        private Label label3;
-        private Label label4;
         private Label label5;
-        private Label label6;
+        public Label label3;
+        public Label label4;
+        public Label label6;
     }
 }
